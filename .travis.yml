@@ -1,0 +1,39 @@
+language: generic
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t lnajera/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true lnajera/react-test npm test
+
+after_success:
+  - docker build -t lnajera/multi-client ./client
+  - docker build -t lnajera/multi-nginx ./nginx
+  - docker build -t lnajera/multi-server ./server
+  - docker build -t lnajera/multi-worker ./worker
+
+# Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# Take those images and push them to docker hub
+  - docker push lnajera/multi-client
+  - docker push lnajera/multi-nginx 
+  - docker push lnajera/multi-server
+  - docker push lnajera/multi-worker
+
+# deploy:
+#   provider: elasticbeanstalk
+#   region: "us-east-2"
+#   app: "docker-react"
+#   env: "DockerReact-env"
+#   bucket_name: "elasticbeanstalk-us-east-2-335782550487"
+#   bucket_path: "docker-react"
+#   on:
+#     branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
+
+       
