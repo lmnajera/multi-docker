@@ -23,8 +23,9 @@ after_success:
   - docker push lnajera/multi-nginx 
   - docker push lnajera/multi-server
   - docker push lnajera/multi-worker
+  
 
-# deploy:
+  # deploy:
 #   provider: elasticbeanstalk
 #   region: "us-east-2"
 #   app: "docker-react"
