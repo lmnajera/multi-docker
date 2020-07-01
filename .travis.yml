@@ -19,12 +19,11 @@ after_success:
 # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 # Take those images and push them to docker hub
-  - docker push lnajera/multi-client
-  - docker push lnajera/multi-nginx 
+  - docker push lnajera/multi-nginx
   - docker push lnajera/multi-server
   - docker push lnajera/multi-worker
+  - docker push lnajera/multi-client
   
-
 # deploy:
 #   provider: elasticbeanstalk
 #   region: "us-east-2"
